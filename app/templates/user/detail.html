@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>ID : {{ user.user_id }} </h1>
+<div>
+	<p> 가입일 : {{ user.regdate }} </p>
+	<p> 이메일 : {{ user.email }} </p>
+    <p> 비밀번호 : {{ user.password }} </p>
+
+</div>
+{{ form.hidden_tag() }}
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block topbar %}
+{% endblock %}
+{% block content %}
+<div style="width:500px;text-align:center;margin: 0 auto">
+<form action="" method="post" name="login">
+
+    <p>ID<br/> {{ form.id }}</p>
+    <p>Password<br/>{{ form.password }} </p>    
+
+<input type="submit" value="Login">
+{{ form.hidden_tag() }}
+</form>
+</div>
+{% endblock %}

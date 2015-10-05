@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block content %}
+{% for user in users %}
+<a href='{{ url_for('admin.users.detail',user_id=user.user_id)}}' > 
+    {{ user.user_id }}  | {{ user.regdate }}  </a>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,8 @@
+flask
+flask-script
+flask-login
+flask-mail
+flask-wtf
+WTForms
+mongoengine
+flask_mongoengine
