@@ -2,9 +2,9 @@ import datetime
 from app import db
 from flask import url_for
 
+
 class UserExtra(db.EmbeddedDocument):
 	data = db.StringField()
-
 
 class User(db.Document):
     user_id = db.StringField(max_length=40, required=True, unique=True)
@@ -41,3 +41,11 @@ class User(db.Document):
 class UserFinancial(db.Document):
 	memo = db.StringField()	
 
+
+class NoticeBoard(db.Document):
+    no = db.SequenceField(required=True, unique=True)
+    user_id = db.ReferenceField('User')
+    title = db.StringField(max_length=200, required=True)
+    body =  db.StringField(max_length=4000, required=True)
+    regdate =db.DateTimeField(default=datetime.datetime.now, required=True)
+    hitcount = db.IntField()

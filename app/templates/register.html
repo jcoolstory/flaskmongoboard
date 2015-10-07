@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block topbar %}
+{% endblock %}
+{% block content %}
+<div style="width:500px;text-align:center;margin: 0 auto">
+<form action="" method="post" name="register">
+
+    <p>ID<br/> {{ form.user_id }}</p>
+    <p>Password<br/>{{ form.password }} </p>    
+    <p>Password again<br/>{{ form.password2 }} </p>    
+    <p>Email<br/>{{ form.email }} </p>    
+
+<input type="submit" value="Login">
+{{ form.hidden_tag() }}
+</form>
+</div>
+{% endblock %}

@@ -2,7 +2,7 @@ from flask import render_template,flash, redirect,session,url_for,request,g
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from app import app,db,lm
 from datetime import datetime
-from app.forms import LoginForm
+from app.forms import LoginForm,RegisterPersonForm
 from app.models import User
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -23,6 +23,25 @@ def login():
                            title='Sign In',
                            form=form,
                            )
+
+@app.route('/register',methods=['GET','POST'])
+def register():
+  form = RegisterPersonForm()
+  print("form.validate_on_submit():",form.validate_on_submit())
+  if form.validate_on_submit():
+    print (form.password.data)
+    print (form.password2.data)
+    if not form.password.data == form.password2.data:
+      return redirect(url_for('register'))
+    user = User(user_id=form.user_id.data,
+      password=form.password.data,
+      email=form.email.data
+      )
+    user.save()
+
+    return redirect(url_for('index'))
+  else:
+    return render_template('register.html',form=form)
 
 @app.route('/logout')
 def logout():

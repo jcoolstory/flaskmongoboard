@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+{% for notice in notices %}
+<p><a href='{{ url_for('notice.detail',no=notice.no)}}' > 
+    {{ notice.title }} |
+    {{ notice.user_id }}  | {{ notice.regdate }}  </a>
+</p>
+{% endfor %}
+{% endblock %}
