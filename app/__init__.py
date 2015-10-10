@@ -13,5 +13,6 @@ lm.init_app(app)
 lm.login_view='login'
 
 from app import models,views,admin,noticeboard
+
 if __name__ == '__main__':
 	app.run()

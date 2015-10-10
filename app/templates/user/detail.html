@@ -2,10 +2,11 @@
 {% block content %}
 <h1>ID : {{ user.user_id }} </h1>
 <div>
-	<p> 가입일 : {{ user.regdate }} </p>
-	<p> 이메일 : {{ user.email }} </p>
+    <p> 이름 : {{ user.name }} </p>
+    <p> 이메일 : {{ user.email }} </p>
     <p> 비밀번호 : {{ user.password }} </p>
-
+	<p> 가입일 : {{ user.regdate.strftime('%Y.%m.%d') }} </p>
+    <p> 권한 : {{ user.grade }} </p>
 </div>
 {{ form.hidden_tag() }}
 {% endblock %}

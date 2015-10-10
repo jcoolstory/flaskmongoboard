@@ -4,6 +4,11 @@ from app.models import User
 from app import app
 from flask.ext.mongoengine.wtf import model_form
 from flask.ext.login import login_user, logout_user, current_user, login_required
+import time
+
+@app.route('/admin',methods=['GET','POST'])
+def admin_index():
+    return render_template('admin/index.html')
 
 class ListView(MethodView):
     @login_required
@@ -11,6 +16,7 @@ class ListView(MethodView):
         users = User.objects.all()
         return render_template('user/list.html',
                                 users=users,
+                                type=type,
                                 current_user=current_user)
 
 class DetailView(MethodView):

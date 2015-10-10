@@ -8,6 +8,7 @@ class UserExtra(db.EmbeddedDocument):
 
 class User(db.Document):
     user_id = db.StringField(max_length=40, required=True, unique=True)
+    name = db.StringField(max_length=100,required=True)
     password = db.StringField(max_length=40, required=True)
     regdate = db.DateTimeField(default=datetime.datetime.now, required=True)
     email = db.StringField(max_length=100, required=True, unique=True)
@@ -44,8 +45,8 @@ class UserFinancial(db.Document):
 
 class NoticeBoard(db.Document):
     no = db.SequenceField(required=True, unique=True)
-    user_id = db.ReferenceField('User')
+    user_id = db.ReferenceField('User',required=True)
     title = db.StringField(max_length=200, required=True)
-    body =  db.StringField(max_length=4000, required=True)
+    body =  db.StringField(required=True)
     regdate =db.DateTimeField(default=datetime.datetime.now, required=True)
-    hitcount = db.IntField()
+    hitcount = db.IntField(default=0)

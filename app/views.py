@@ -17,6 +17,7 @@ def login():
                                       password=form.password.data)
       
       login_user(user)
+      session['user_obj'] = user
       return redirect(url_for('index'))
 
     return render_template('login.html',
@@ -29,8 +30,6 @@ def register():
   form = RegisterPersonForm()
   print("form.validate_on_submit():",form.validate_on_submit())
   if form.validate_on_submit():
-    print (form.password.data)
-    print (form.password2.data)
     if not form.password.data == form.password2.data:
       return redirect(url_for('register'))
     user = User(user_id=form.user_id.data,
@@ -54,4 +53,5 @@ def index():
 
 @lm.user_loader
 def load_user(id):
+    print ("load_user(id)")
     return User.objects.get(user_id=id)

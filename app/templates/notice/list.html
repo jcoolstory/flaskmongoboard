@@ -2,8 +2,12 @@
 {% block content %}
 {% for notice in notices %}
 <p><a href='{{ url_for('notice.detail',no=notice.no)}}' > 
+    {{ notice.no }}
     {{ notice.title }} |
-    {{ notice.user_id }}  | {{ notice.regdate }}  </a>
+    {{ notice.body }} |
+    {{ notice.user_id.user_id }}  | {{ notice.regdate }}  </a>
+    <a href='{{ url_for('notice.edit',no=notice.no)}}' >edit</a>
+    <a href='{{ url_for('notice.delete',no=notice.no)}}' >delete</a>
 </p>
 {% endfor %}
 {% endblock %}

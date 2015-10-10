@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block topbar %}
+<div class="jumbotron">
+<h1>Admin</h1>
+</div>
+{% endblock %}
+{% block content %}
+<div class="container">
+    <ul class="nav nav-tabs ">
+        <li >
+            <a href="{{ url_for('admin.users.list') }}">User </a>
+        </li>
+    </ul>
+</div>
+{% endblock %}
