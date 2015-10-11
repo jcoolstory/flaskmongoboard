@@ -7,14 +7,11 @@ from app.models import User
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    # print("login : %s" % g.user)
-    # if g.user is not None and g.user.is_authenticated:
-    #     return redirect(url_for('index'))
     form = LoginForm()
     if form.validate_on_submit():
       
       user = User.objects.get_or_404(user_id=form.id.data,
-                                      password=form.password.data)
+                                     password=form.password.data)
       
       login_user(user)
       session['user_obj'] = user
@@ -22,8 +19,7 @@ def login():
 
     return render_template('login.html',
                            title='Sign In',
-                           form=form,
-                           )
+                           form=form,)
 
 @app.route('/register',methods=['GET','POST'])
 def register():
@@ -32,10 +28,11 @@ def register():
   if form.validate_on_submit():
     if not form.password.data == form.password2.data:
       return redirect(url_for('register'))
+
     user = User(user_id=form.user_id.data,
-      password=form.password.data,
-      email=form.email.data
-      )
+                name=form.name.data,
+                password=form.password.data,
+                email=form.email.data)
     user.save()
 
     return redirect(url_for('index'))

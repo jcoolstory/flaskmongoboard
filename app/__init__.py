@@ -3,7 +3,7 @@ from flask.ext.mongoengine import MongoEngine
 from flask.ext.login import LoginManager
 
 app = Flask(__name__)
-app.config["MONGODB_SETTINGS"] = {'DB':'3wm'}
+app.config["MONGODB_SETTINGS"] = {'DB':'wealth'}
 app.config['SECRET_KEY'] = 'KeepThisS3scr3t'
 
 db = MongoEngine(app)

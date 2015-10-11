@@ -9,6 +9,7 @@ class LoginForm(Form):
 
 class RegisterPersonForm(Form):
     user_id = StringField('user_id', validators=[DataRequired()])
+    name = StringField('name',validators=[DataRequired()])
     password = StringField('password', validators=[DataRequired()])
     password2 = StringField('password2', validators=[DataRequired()])
     email = StringField('email', validators=[DataRequired()])

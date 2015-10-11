@@ -51,13 +51,8 @@ class EditView(MethodView):
         return context
 
     @login_required
-    def get(self,no):
-        
-        context = self.get_context(no)
-        if context['post'].user_id == None:
-          return redirect( url_for('notice.list' ))
-        if not context['post'].user_id.user_id == current_user.user_id:
-          return redirect( url_for('notice.list' ))
+    def get(self,no):        
+        context = self.get_context(no)        
         return render_template('notice/edit.html',**context)
 
     @login_required
@@ -68,24 +63,16 @@ class EditView(MethodView):
             current=User.objects.get(user_id=current_user.user_id)
             post = NoticeBoard(user_id=current,
                 title=form.title.data,
-                body=form.body.data
-                )
+                body=form.body.data )
             post.save()
             return redirect( url_for('notice.list'))
         return render_template('notice/edit.html',**context)
 
-
 notice = Blueprint('notice',__name__,template_folder='templates')
-notice.add_url_rule('/notice/',
-        view_func=ListView.as_view('list'))
-notice.add_url_rule('/notice/<no>/',
-        view_func=DetailView.as_view('detail'))
-notice.add_url_rule('/notice/edit/<no>/',
-        view_func=EditView.as_view('edit'))
-notice.add_url_rule('/notice/create',
-        defaults={'no':None},
-        view_func=EditView.as_view('create'))
-notice.add_url_rule('/notice/delete/<no>/',
-        view_func=DeleteView.as_view('delete'))
+notice.add_url_rule('/notice/', view_func=ListView.as_view('list'))
+notice.add_url_rule('/notice/<no>/', view_func=DetailView.as_view('detail'))
+notice.add_url_rule('/notice/edit/<no>/', view_func=EditView.as_view('edit'))
+notice.add_url_rule('/notice/create', defaults={'no':None},
+                                      view_func=EditView.as_view('create'))
+notice.add_url_rule('/notice/delete/<no>/',view_func=DeleteView.as_view('delete'))
 app.register_blueprint(notice)
-

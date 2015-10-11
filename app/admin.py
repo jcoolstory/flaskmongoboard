@@ -13,6 +13,8 @@ def admin_index():
 class ListView(MethodView):
     @login_required
     def get(self):
+        if not current_user.is_admin:
+            return redirect( url_for('index'))
         users = User.objects.all()
         return render_template('user/list.html',
                                 users=users,
@@ -21,22 +23,45 @@ class ListView(MethodView):
 
 class DetailView(MethodView):
 
-    form = model_form(User, exclude=['regdate'])
+    form = model_form(User, exclude=['user_id','regdate','extra'])
 
     def get_context(self,user_id):
 
         user = User.objects.get_or_404(user_id=user_id)
-        form = self.form(request.form)
-
-        context = {
-                "user":user,
-                "form":form
-                }
+        
+        if request.method == 'POST':
+            form = self.form(request.form, inital=user._data)
+            print ([x.label for x in form])
+            print(form.name)
+            print(form.password)
+        else:
+            form = self.form(obj=user)
+        context = { "user":user,
+                    "form":form }
         return context
 
     @login_required
     def get(self,user_id):
+        if not current_user.is_admin:
+            return redirect( url_for('index'))
         context = self.get_context(user_id)
+        return render_template('user/detail.html',**context)
+
+    @login_required
+    def post(self,user_id):
+        if not current_user.is_admin:
+            return redirect( url_for('index'))
+        context = self.get_context(user_id)
+        form = context.get('form')
+        print ('form.validate', form.validate())
+        if form.validate():
+            user =context.get('user')
+            # user = User(user_id=current,
+            #     title=form.title.data,
+            #     body=form.body.data )
+            form.populate_obj(user)            
+            user.save()
+            return redirect( url_for('admin.users.detail',user_id=user_id))
         return render_template('user/detail.html',**context)
 
 users = Blueprint('admin.users',__name__,template_folder='templates')

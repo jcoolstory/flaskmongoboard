@@ -2,7 +2,6 @@ import datetime
 from app import db
 from flask import url_for
 
-
 class UserExtra(db.EmbeddedDocument):
 	data = db.StringField()
 
@@ -16,6 +15,11 @@ class User(db.Document):
     grade = db.StringField(max_length=100)
 
     financial = db.ReferenceField('UserFinancial')
+
+    @property
+    def is_admin(self):
+        print (self.grade)
+        return self.grade =="admin"
 
     @property
     def is_authenticated(self):
@@ -38,10 +42,8 @@ class User(db.Document):
         except NameError:
             return str(self.user_id)  # python 3
 
-
 class UserFinancial(db.Document):
 	memo = db.StringField()	
-
 
 class NoticeBoard(db.Document):
     no = db.SequenceField(required=True, unique=True)
