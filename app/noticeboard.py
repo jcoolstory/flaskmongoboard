@@ -1,6 +1,7 @@
 from flask import Blueprint, request, redirect, render_template, url_for,g,session
 from flask.views import MethodView
 from app.models import User,NoticeBoard
+from .pagination import Pagination
 from app import app
 from flask.ext.mongoengine.wtf import model_form
 from flask.ext.login import current_user, login_required
@@ -8,10 +9,18 @@ from bson.json_util import dumps
 
 class ListView(MethodView):
 
-    def get(self):
-        notices = NoticeBoard.objects.all().order_by('-no')[0:10]
+    pagesize =15
+    def get(self,page):
+        if page is None:
+            page = 1
+        start = (page-1) * self.pagesize
+        print(page)
+        count = NoticeBoard.objects.all().count()
+        notices = NoticeBoard.objects.all().order_by('-no')[start:start+self.pagesize]
+        pagination = Pagination(page, self.pagesize, count)
         return render_template('notice/list.html',
                                 notices=notices,
+                                pagination=pagination,
                                 current_user=current_user)
 class DeleteView(MethodView):
     def get(self,no):
@@ -69,8 +78,13 @@ class EditView(MethodView):
         return render_template('notice/edit.html',**context)
 
 notice = Blueprint('notice',__name__,template_folder='templates')
-notice.add_url_rule('/notice/', view_func=ListView.as_view('list'))
-notice.add_url_rule('/notice/<no>/', view_func=DetailView.as_view('detail'))
+notice_func = ListView.as_view('list')
+
+notice.add_url_rule('/notice', defaults={'page':1},view_func=notice_func)
+notice.add_url_rule('/notice/', defaults={'page':1},view_func=notice_func)
+notice.add_url_rule('/notice/<int:page>', view_func=notice_func)
+
+notice.add_url_rule('/notice/detail/<no>/', view_func=DetailView.as_view('detail'))
 notice.add_url_rule('/notice/edit/<no>/', view_func=EditView.as_view('edit'))
 notice.add_url_rule('/notice/create', defaults={'no':None},
                                       view_func=EditView.as_view('create'))
