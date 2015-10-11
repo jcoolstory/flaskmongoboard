@@ -3,8 +3,7 @@
 <form action="" method="post" name="login">
 <p> title : {{ form.title }} </p>
 <p> content : {{ form.body }} </p>
-<input type="submit" value="Login">
+<button class="btn btn-lg btn-primary btn-block" type="submit">
 {{ form.hidden_tag() }}
 </form>
 {% endblock %}
-

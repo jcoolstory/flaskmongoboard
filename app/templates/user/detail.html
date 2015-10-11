@@ -1,12 +1,15 @@
-{% extends 'base.html' %}
+{% extends 'admin/base.html' %}
 {% block content %}
-<h1>ID : {{ user.user_id }} </h1>
+<form action="" method="post" name="user">
 <div>
-    <p> 이름 : {{ user.name }} </p>
-    <p> 이메일 : {{ user.email }} </p>
-    <p> 비밀번호 : {{ user.password }} </p>
-	<p> 가입일 : {{ user.regdate.strftime('%Y.%m.%d') }} </p>
-    <p> 권한 : {{ user.grade }} </p>
+    <h1>ID : {{ user.user_id }} </h1>
+    <p> 이름 <br/>{{ form.name }} </p>
+    <p> 이메일 <br/>{{ form.email }} </p>
+    <p> 비밀번호<br/>{{ form.password }} </p>	
+    <p> 권한<br/>{{ form.grade }} </p>
+    <p> 가입일 : {{ user.regdate.strftime('%Y.%m.%d') }} </p>
+    <button class="btn  btn-primary" type="submit">edit</button>
 </div>
 {{ form.hidden_tag() }}
+</form>
 {% endblock %}
