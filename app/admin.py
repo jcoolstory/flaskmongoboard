@@ -11,7 +11,9 @@ def admin_index():
     return render_template('admin/index.html')
 
 class ListView(MethodView):
+    pagesize =15
     @login_required
+    
     def get(self):
         if not current_user.is_admin:
             return redirect( url_for('index'))

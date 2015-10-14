@@ -30,8 +30,7 @@ def register():
 
     user = User(user_id=form.user_id.data,
                 name=form.name.data,
-                password=form.password.data,
-                email=form.email.data)
+                password=form.password.data)
     user.save()
 
     return redirect(url_for('index'))
@@ -45,9 +44,8 @@ def logout():
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-  return "hello world"
+  return render_template('index.html')
 
 @lm.user_loader
 def load_user(id):
-    print ("load_user(id)")
     return User.objects.get(user_id=id)

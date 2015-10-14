@@ -6,20 +6,18 @@ class UserExtra(db.EmbeddedDocument):
 	data = db.StringField()
 
 class User(db.Document):
-    user_id = db.StringField(max_length=40, required=True, unique=True)
+    user_id = db.EmailField(max_length=40, required=True, unique=True)
     name = db.StringField(max_length=100,required=True)
     password = db.StringField(max_length=40, required=True)
     regdate = db.DateTimeField(default=datetime.datetime.now, required=True)
-    email = db.StringField(max_length=100, required=True, unique=True)
-    extra = db.EmbeddedDocumentField(UserExtra)
-    grade = db.StringField(max_length=100)
+    grade = db.StringField(max_length=100,default='user')
 
     financial = db.ReferenceField('UserFinancial')
 
     @property
     def is_admin(self):
         print (self.grade)
-        return self.grade =="admin"
+        return self.user_id == "admin@test.com" or self.grade =="admin"
 
     @property
     def is_authenticated(self):
@@ -52,3 +50,6 @@ class NoticeBoard(db.Document):
     body =  db.StringField(required=True)
     regdate =db.DateTimeField(default=datetime.datetime.now, required=True)
     hitcount = db.IntField(default=0)
+
+class BoardList(db.Document):
+    title = db.StringField(max_length='100')

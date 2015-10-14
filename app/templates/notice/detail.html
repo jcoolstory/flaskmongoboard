@@ -1,9 +1,17 @@
 {% extends 'base.html' %}
 {% block content %}
-<p> no : {{ post.no }} </p>
-<p> id : {{ post.user_id.user_id }} </p>
-<p> title : {{ post.title }} </p>
-<p> content : {{ post.body }} </p>
-<p> hitcount : {{ post.hitcount }}
+<div class="container">
+   <h4> 공지사항</h4>
+    <p><a href="{{ url_for('notice.list',board=url_for_bbs())}}" class="btn btn-xs btn-default">목록</a>
+    <a href="{{ url_for('notice.edit',no=post.no,board=url_for_bbs()) }}" class="btn btn-xs btn-default">수정</a>
+    </p>
+<hr/>
+<div ><h3>{{ post.title }} </h3></div>
+<hr/>
+<p><span class='lead'>{{ post.user_id.name }}</span>
+<span> no : {{ post.no }} </span><span> hitcount : {{ post.hitcount }} </span></p>
+<hr/>
+<div> {{ post.body|safe }} 
+</div>
+</div>
 {% endblock %}
-

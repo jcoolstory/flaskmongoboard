@@ -9,11 +9,14 @@
   <style>.content {padding-top:80px;}</style>
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
-        <div class="navbar-header">
-          <h2><a href="/" class="brand">Wealth</a><small>Starring Flask, MongoDB and MongoEngine</small></h2>
+        <div style='text-align:right'>|
           {% if current_user.is_authenticated %}
-          | <a href="{{ url_for('logout') }}">Logout</a>
-          {% endif %}
+          <small><a  href="{{ url_for('logout') }}">Logout</a></small>
+          {% endif %}</div>
+        <div class="navbar-header">
+          
+          <h3><a href="/" class="brand">Wealth</a><small></small></h3>
+          
         </div>
         <div class="navbar-collapse">
         </div><!--/.nav-collapse -->

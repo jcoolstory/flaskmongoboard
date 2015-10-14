@@ -18,7 +18,11 @@ def url_for_other_page(page):
     args = request.view_args.copy()
     args['page'] = page
     return url_for(request.endpoint, **args)
-app.jinja_env.globals['url_for_other_page'] = url_for_other_page
 
+def url_for_bbs():
+    return request.view_args['board']
+
+app.jinja_env.globals['url_for_other_page'] = url_for_other_page
+app.jinja_env.globals['url_for_bbs'] = url_for_bbs
 if __name__ == '__main__':
 	app.run()

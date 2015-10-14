@@ -1,9 +1,22 @@
 {% extends 'base.html' %}
 {% block content %}
-<form action="" method="post" name="login">
-<p> title : {{ form.title }} </p>
-<p> content : {{ form.body }} </p>
-<input type="submit" value="Login">
+<script type="text/javascript" src="/static/js/tinymce/tinymce.min.js"></script>
+<script type="text/javascript">
+        tinymce.init({
+            selector: "#body"
+        });
+    </script>
+<div class="container">
+   <h4>공지사항 - 수정</h4>
+<a href="{{ url_for('notice.list',board=url_for_bbs())}}" class="btn btn-xs btn-default">목록</a><br/>
+<hr/>
+
+<form class="form-horizontal" role="form" action="" method="post" name="login">
+<p><label> Title </label><p>{{ form.title(class_="form-control") }} </p>
+<p><label> Content  </label><p> {{ form.body(class_="form-control",cols="35", rows="40") }} </p>
+<div><input class="form-control btn btn-default" type="submit" value="Edit">
+</div>
 {{ form.hidden_tag() }}
 </form>
+</div>
 {% endblock %}
