@@ -2,7 +2,24 @@
 {% import "_interpage.html" as interpage %}
 {% block content %}
 <h1>공지사항</h1>
-<p><a class="btn btn-xs btn-primary"  href={{url_for('notice.create',board=url_for_bbs())}}> create <a/></p>
+
+<a class="btn btn-xs btn-primary pull-left"  href="{{url_for('notice.create',board=url_for_bbs())}}" > create </a>
+<div class="col-sm-3 pull-right" style="margin-bottom:10px;">   
+    <form action="" method='get'  class="form-horizontal">
+<div class="row">
+  <div class="col-lg-6">
+    <div class="input-group">
+      <input type='text' id='q' name='q' placeholder="Search" class='form-control' value={{p}}>
+      <!-- {{ form.q(class="form-control") }} -->
+      <span class="input-group-btn">
+        <input class='btn btn-default' type='submit' value="Go" />
+      </span>
+    </div><!-- /input-group -->
+  </div><!-- /.col-lg-6 -->
+</div><!-- /.row -->
+</form>
+</div>
+
 <table class="table table-striped table-bordered table-hover model-list">
 <thead><tr>
     <th style="width:10%">No</th><th style="width:auto">Title</th><th style="width:10%">ID</th><th style="width:10%">Date</th></tr></thead>
@@ -17,6 +34,8 @@
 {% endfor %}
 </tbody>
 </table>
+
 {{ interpage.render_pagination(pagination) }}
+
 {% endblock %}
 

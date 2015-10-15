@@ -1,10 +1,12 @@
 from flask import Blueprint, request, redirect, render_template, url_for,g
 from flask.views import MethodView
 from app.models import User
+from app.forms import SearchForm
 from app import app
 from .pagination import Pagination
 from flask.ext.mongoengine.wtf import model_form
 from flask.ext.login import login_user, logout_user, current_user, login_required
+from mongoengine.queryset import Q
 import time
 
 @app.route('/admin',methods=['GET','POST'])
@@ -16,20 +18,28 @@ class ListView(MethodView):
     @login_required
     
     def get(self):
+
         if not current_user.is_admin:
             return redirect( url_for('index'))
-        # if page is None:
-        # page = 1
-        page = int(request.args.get('page',1))
-        count = User.objects.all().count()
+        querys = Q()
+        form = SearchForm()
+        
+        page = int(request.args.get('page',1))        
+        p = request.args.get('q',None)
+        if p:
+            querys = Q(user_id__contains=p)
         start = (page-1) * self.pagesize
-        users = User.objects.all()[start:start+self.pagesize]
+        users = User.objects(querys)[start:start+self.pagesize]
+        count = users.count()
         pagination = Pagination(page, self.pagesize, count)
+
         return render_template('user/list.html',
                                 users=users,
                                 type=type,
                                 pagination=pagination,
-                                current_user=current_user)
+                                current_user=current_user,
+                                p=p,
+                                form=form)
 
 class DetailView(MethodView):
 

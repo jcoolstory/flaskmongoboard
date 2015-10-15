@@ -13,3 +13,6 @@ class RegisterPersonForm(Form):
     name = StringField('name',validators=[DataRequired()])
     password = PasswordField('password', validators=[DataRequired()])
     password2 = PasswordField('password2', validators=[DataRequired()])
+
+class SearchForm(Form):
+    q = StringField('q')

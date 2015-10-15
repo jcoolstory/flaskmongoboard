@@ -22,8 +22,7 @@ def login():
 
 @app.route('/register',methods=['GET','POST'])
 def register():
-  form = RegisterPersonForm()
-  print("form.validate_on_submit():",form.validate_on_submit())
+  form = RegisterPersonForm()  
   if form.validate_on_submit():
     if not form.password.data == form.password2.data:
       return redirect(url_for('register'))

@@ -7,6 +7,25 @@
             <a href="#">List</a>
         </li>
     </ul>
+<p>
+<div class="col-sm-3 pull-right" style="margin-bottom:10px;">   
+    <form action="" method='get'  class="form-horizontal">
+<div class="row">
+  <div class="col-lg-6">
+    <div class="input-group">
+      <input type='text' id='q' name='q' placeholder="Search" class='form-control' value={{p}}>
+      <!-- {{ form.q(class="form-control") }} -->
+      <span class="input-group-btn">
+        <input class='btn btn-default' type='submit' value="Go" />
+      </span>
+    </div><!-- /input-group -->
+  </div><!-- /.col-lg-6 -->
+</div><!-- /.row -->
+</form>
+</div>
+
+</p>
+<br/>
 <table class="table table-striped table-bordered table-hover model-list">
     <thead><tr><th class="column-header">id</th>
         <th>name</th><th>grade</th><th>date</th></tr></thead>

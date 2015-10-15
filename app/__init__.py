@@ -18,9 +18,8 @@ def gen_hash(string):
 
 from app import models,views,admin,noticeboard
 
-
 def url_for_other_page(page):
-    args = request.view_args.copy()
+    args = dict(request.view_args, **request.args)
     args['page'] = page
     return url_for(request.endpoint, **args)
 
