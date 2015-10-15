@@ -1,10 +1,11 @@
 from flask import Flask,request,url_for
 from flask.ext.mongoengine import MongoEngine
 from flask.ext.login import LoginManager
+import hashlib
 
 app = Flask(__name__)
 app.config["MONGODB_SETTINGS"] = {'DB':'wealth'}
-app.config['SECRET_KEY'] = 'KeepThisS3scr3t'
+app.config['SECRET_KEY'] = '2ad830a92da34be4981928f285888080'
 
 db = MongoEngine(app)
 
@@ -12,7 +13,11 @@ lm = LoginManager()
 lm.init_app(app)
 lm.login_view='login'
 
+def gen_hash(string):
+    return hashlib.sha256(bytearray(string,encoding='utf8')).hexdigest()
+
 from app import models,views,admin,noticeboard
+
 
 def url_for_other_page(page):
     args = request.view_args.copy()

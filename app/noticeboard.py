@@ -18,7 +18,7 @@ class ListView(MethodView):
         if page is None:
             page = 1
         start = (page-1) * self.pagesize
-        print(page)
+        
         count = post_obj.objects.all().count()
         notices = post_obj.objects.all().order_by('-no')[start:start+self.pagesize]
         pagination = Pagination(page, self.pagesize, count)

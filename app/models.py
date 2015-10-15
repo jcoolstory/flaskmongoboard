@@ -1,18 +1,23 @@
 import datetime
-from app import db
+
+
+from app import db,gen_hash
 from flask import url_for
 
 class UserExtra(db.EmbeddedDocument):
 	data = db.StringField()
 
 class User(db.Document):
-    user_id = db.EmailField(max_length=40, required=True, unique=True)
+    user_id = db.EmailField(max_length=100, required=True, unique=True)
     name = db.StringField(max_length=100,required=True)
-    password = db.StringField(max_length=40, required=True)
+    password = db.StringField(max_length=64, required=True)
     regdate = db.DateTimeField(default=datetime.datetime.now, required=True)
     grade = db.StringField(max_length=100,default='user')
 
     financial = db.ReferenceField('UserFinancial')
+
+    def set_password(self,password):
+        self.password = gen_hash(password)
 
     @property
     def is_admin(self):

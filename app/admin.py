@@ -2,6 +2,7 @@ from flask import Blueprint, request, redirect, render_template, url_for,g
 from flask.views import MethodView
 from app.models import User
 from app import app
+from .pagination import Pagination
 from flask.ext.mongoengine.wtf import model_form
 from flask.ext.login import login_user, logout_user, current_user, login_required
 import time
@@ -17,10 +18,17 @@ class ListView(MethodView):
     def get(self):
         if not current_user.is_admin:
             return redirect( url_for('index'))
-        users = User.objects.all()
+        # if page is None:
+        # page = 1
+        page = int(request.args.get('page',1))
+        count = User.objects.all().count()
+        start = (page-1) * self.pagesize
+        users = User.objects.all()[start:start+self.pagesize]
+        pagination = Pagination(page, self.pagesize, count)
         return render_template('user/list.html',
                                 users=users,
                                 type=type,
+                                pagination=pagination,
                                 current_user=current_user)
 
 class DetailView(MethodView):
