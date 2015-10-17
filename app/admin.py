@@ -1,13 +1,13 @@
 from flask import Blueprint, request, redirect, render_template, url_for,g
 from flask.views import MethodView
-from app.models import User
-from app.forms import SearchForm
+from app.models import User,UserGrade
+from app.forms import SearchForm,ExtraForm,UserDetailForm
 from app import app
 from .pagination import Pagination
 from flask.ext.mongoengine.wtf import model_form
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from mongoengine.queryset import Q
-import time
+import time,logging,sys
 
 @app.route('/admin',methods=['GET','POST'])
 def admin_index():
@@ -15,10 +15,8 @@ def admin_index():
 
 class ListView(MethodView):
     pagesize =15
-    @login_required
-    
+    @login_required    
     def get(self):
-
         if not current_user.is_admin:
             return redirect( url_for('index'))
         querys = Q()
@@ -34,30 +32,25 @@ class ListView(MethodView):
         pagination = Pagination(page, self.pagesize, count)
 
         return render_template('user/list.html',
-                                users=users,
-                                type=type,
+                                users=users,p=p,form=form,
                                 pagination=pagination,
-                                current_user=current_user,
-                                p=p,
-                                form=form)
+                                current_user=current_user,)
 
 class DetailView(MethodView):
-
-    form = model_form(User, exclude=['user_id','regdate','extra'])
+    #form =UserDetailForm
+    
+    form = model_form(User, exclude=['user_id','regdate','password','extra'],field_args={'grade':{'label_attr':'name'}})
 
     def get_context(self,user_id):
-
         user = User.objects.get_or_404(user_id=user_id)
         
         if request.method == 'POST':
             form = self.form(request.form, inital=user._data)
-            print ([x.label for x in form])
-            print(form.name)
-            print(form.password)
         else:
+
             form = self.form(obj=user)
         context = { "user":user,
-                    "form":form }
+                    "form":form }     
         return context
 
     @login_required
@@ -73,21 +66,19 @@ class DetailView(MethodView):
             return redirect( url_for('index'))
         context = self.get_context(user_id)
         form = context.get('form')
-        print ('form.validate', form.validate())
+        logging.info(request.form)
         if form.validate():
             user =context.get('user')
-            # user = User(user_id=current,
-            #     title=form.title.data,
-            #     body=form.body.data )
             form.populate_obj(user)            
+            user.extra.data = request.form['extra_data']
             user.save()
             return redirect( url_for('admin.users.detail',user_id=user_id))
+        else:
+            logging.info(form.errors)
         return render_template('user/detail.html',**context)
 
 users = Blueprint('admin.users',__name__,template_folder='templates')
-users.add_url_rule('/admin/users/',
-        view_func=ListView.as_view('list'))
-users.add_url_rule('/admin/users/<user_id>/',
-        view_func=DetailView.as_view('detail'))
+users.add_url_rule('/admin/users/', view_func=ListView.as_view('list'))
+users.add_url_rule('/admin/users/<user_id>/', view_func=DetailView.as_view('detail'))
 app.register_blueprint(users)
 

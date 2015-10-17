@@ -1,19 +1,24 @@
 import datetime
-
-
 from app import db,gen_hash
 from flask import url_for
 
 class UserExtra(db.EmbeddedDocument):
-	data = db.StringField()
+    data = db.StringField()
+    follower = db.ListField(db.ReferenceField('User'))
+
+class UserGrade(db.Document):
+    name = db.StringField(default="user")
+
+    def __str__(self):
+        return self.name
 
 class User(db.Document):
     user_id = db.EmailField(max_length=100, required=True, unique=True)
     name = db.StringField(max_length=100,required=True)
     password = db.StringField(max_length=64, required=True)
     regdate = db.DateTimeField(default=datetime.datetime.now, required=True)
-    grade = db.StringField(max_length=100,default='user')
-
+    grade = db.ReferenceField('UserGrade')
+    extra = db.EmbeddedDocumentField('UserExtra',default=None)
     financial = db.ReferenceField('UserFinancial')
 
     def set_password(self,password):
@@ -44,6 +49,9 @@ class User(db.Document):
             return unicode(self.user_id)  # python 2
         except NameError:
             return str(self.user_id)  # python 3
+
+    def __str__(self):
+        return self.name
 
 class UserFinancial(db.Document):
 	memo = db.StringField()	
