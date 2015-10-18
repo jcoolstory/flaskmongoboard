@@ -61,13 +61,17 @@ class DetailView(MethodView):
 
 class EditView(MethodView):
 
-    form = model_form(NoticeBoard, exclude=['user_id','regdate'])
+    form = None#model_form(NoticeBoard, exclude=['user_id','regdate'])
     
     def get_context(self,post_obj,no):
         print(no)
         if no :
             post = post_obj.objects.get_or_404(no=no)
-            form = self.form(obj=post)
+            if request.method == 'POST':
+                form = self.form(request.form, inital=post._data)
+            else:
+
+                form = self.form(obj=post)
             create = False
         else:
             post = post_obj()
@@ -93,7 +97,7 @@ class EditView(MethodView):
         self.form = model_form(post_obj, exclude=['user_id','regdate'])
         context = self.get_context(post_obj,no)
         form = context.get('form')
-
+        print(form)
         if form.validate():
 
             current=User.objects.get(user_id=current_user.user_id)

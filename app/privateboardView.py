@@ -80,6 +80,11 @@ class EditView(MethodView):
             post = self.model.objects.get_or_404(no=no)
             form = self.form(obj=post)
             create = False
+            if request.method == 'POST':
+                form = self.form(request.form, inital=post._data)
+            else:
+
+                form = self.form(obj=post)
         else:
             post = self.model()
             create = True
