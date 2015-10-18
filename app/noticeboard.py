@@ -61,7 +61,7 @@ class DetailView(MethodView):
 
 class EditView(MethodView):
 
-    form = None
+    form = model_form(NoticeBoard, exclude=['user_id','regdate'])
     
     def get_context(self,post_obj,no):
         print(no)
@@ -88,17 +88,22 @@ class EditView(MethodView):
 
     @login_required
     def post(self,board,no):
+
         post_obj = board_map[board]
         self.form = model_form(post_obj, exclude=['user_id','regdate'])
         context = self.get_context(post_obj,no)
         form = context.get('form')
+
         if form.validate():
+
             current=User.objects.get(user_id=current_user.user_id)
             post = post_obj(user_id=current,
                 title=form.title.data,
                 body=form.body.data )
             post.save()
-            return redirect( url_for('notice.list'))
+            return redirect( url_for('notice.list',board=board))
+        else:
+            print(form.errors)
         return render_template('notice/edit.html',**context)
 
 notice = Blueprint('notice',__name__,template_folder='templates')

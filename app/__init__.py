@@ -16,7 +16,7 @@ lm.login_view='login'
 def gen_hash(string):
     return hashlib.sha256(bytearray(string,encoding='utf8')).hexdigest()
 
-from app import models,views,admin,noticeboard
+from app import models,views,admin, noticeboard,privateboardView
 
 def url_for_other_page(page):
     args = dict(request.view_args, **request.args)

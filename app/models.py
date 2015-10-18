@@ -7,6 +7,7 @@ class UserExtra(db.EmbeddedDocument):
     follower = db.ListField(db.ReferenceField('User'))
 
 class UserGrade(db.Document):
+    grade = db.IntField(default=1)
     name = db.StringField(default="user")
 
     def __str__(self):
@@ -18,7 +19,7 @@ class User(db.Document):
     password = db.StringField(max_length=64, required=True)
     regdate = db.DateTimeField(default=datetime.datetime.now, required=True)
     grade = db.ReferenceField('UserGrade')
-    extra = db.EmbeddedDocumentField('UserExtra',default=None)
+    extra = db.EmbeddedDocumentField('UserExtra')
     financial = db.ReferenceField('UserFinancial')
 
     def set_password(self,password):
@@ -50,8 +51,6 @@ class User(db.Document):
         except NameError:
             return str(self.user_id)  # python 3
 
-    def __str__(self):
-        return self.name
 
 class UserFinancial(db.Document):
 	memo = db.StringField()	
@@ -66,3 +65,13 @@ class NoticeBoard(db.Document):
 
 class BoardList(db.Document):
     title = db.StringField(max_length='100')
+
+class UserPrivateBoard(db.Document):
+    no = db.SequenceField(required=True, unique=True)
+    group =db.ReferenceField('User',required=True)
+    manager_id = db.ReferenceField('User',required=True)
+    user_id = db.ReferenceField('User',required=True)
+    title = db.StringField(max_length=200, required=True)
+    body =  db.StringField(required=True)
+    regdate =db.DateTimeField(default=datetime.datetime.now, required=True)
+    hitcount = db.IntField(default=0)

@@ -49,3 +49,4 @@ def index():
 @lm.user_loader
 def load_user(id):
     return User.objects.get(user_id=id)
+
