@@ -28,7 +28,7 @@ def register():
       return redirect(url_for('register'))
 
     user = User(user_id=form.user_id.data,
-                name=form.name.data,
+                name=form.name.data,extra =UserExtra()
                 password=form.password.data)
     user.set_password(form.password.data)
     user.save()

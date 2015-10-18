@@ -71,7 +71,7 @@ class DetailView(MethodView):
             user =context.get('user')
             form.populate_obj(user)       
             print (user.to_json())     
-            # user.extra.data = request.form['extra_data']
+            user.extra.data = request.form['extra_data']
             user.save()
             return redirect( url_for('admin.users.detail',user_id=user_id))
         else:

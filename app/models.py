@@ -3,7 +3,7 @@ from app import db,gen_hash
 from flask import url_for
 
 class UserExtra(db.EmbeddedDocument):
-    data = db.StringField()
+    data = db.StringField(default="")
     follower = db.ListField(db.ReferenceField('User'))
 
 class UserGrade(db.Document):
