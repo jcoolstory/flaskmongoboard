@@ -37,10 +37,20 @@ class ListView(MethodView):
                                 current_user=current_user,
                                 form=form,
                                 q=q)
+
 class DeleteView(MethodView):
+    def check_grade(self,post_obj):
+        if current_user.is_admin:
+            return True
+        if post_obj.user_id == current_user.user_id:
+            return True
+        abort(404)
+
     def get(self,board,no):
+        
         post_obj = board_map[board]
         post = post_obj.objects.get_or_404(no=no)
+        check_grade(post)
         post.delete()
         return redirect( url_for('notice.list'))
 
@@ -62,12 +72,17 @@ class DetailView(MethodView):
 class EditView(MethodView):
 
     form = None#model_form(NoticeBoard, exclude=['user_id','regdate'])
-    
+    def check_grade(self,post_obj):
+        if current_user.is_admin:
+            return True
+        if post_obj.user_id == current_user.user_id:
+            return True
+        abort(404)
     def get_context(self,post_obj,no):
-        print(no)
         if no :
             post = post_obj.objects.get_or_404(no=no)
             if request.method == 'POST':
+                check_grade(self,post)
                 form = self.form(request.form, inital=post._data)
             else:
 
