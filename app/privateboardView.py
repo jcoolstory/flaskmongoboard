@@ -26,8 +26,9 @@ class ListView(MethodView):
     @login_required
     def get(self,board,page):
         self.check_access(board)
+
         form = SearchForm()
-        print(board)
+        
         user = User.objects.get_or_404(user_id=board)
         querys = Q(group=user)
         q = request.args.get('q',None)
@@ -47,6 +48,7 @@ class ListView(MethodView):
                                 current_user=current_user,
                                 form=form,
                                 q=q)
+                                
 class DeleteView(MethodView):
     model = UserPrivateBoard
     def get(self,board,no):

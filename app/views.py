@@ -3,7 +3,7 @@ from flask.ext.login import login_user, logout_user, current_user, login_require
 from app import app,db,lm,gen_hash
 from datetime import datetime
 from app.forms import LoginForm,RegisterPersonForm
-from app.models import User
+from app.models import User , UserExtra
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

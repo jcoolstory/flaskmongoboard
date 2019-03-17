@@ -2,13 +2,19 @@ from flask import Flask,request,url_for
 from flask.ext.mongoengine import MongoEngine
 from flask.ext.login import LoginManager
 import hashlib,sys,logging
+
+
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+
 app = Flask(__name__)
+
+# mongodb set
 app.config["MONGODB_SETTINGS"] = {'DB':'wealth'}
 app.config['SECRET_KEY'] = '2ad830a92da34be4981928f285888080'
 
 db = MongoEngine(app)
 
+# login manager set
 lm = LoginManager()
 lm.init_app(app)
 lm.login_view='login'
@@ -28,5 +34,7 @@ def url_for_bbs():
 
 app.jinja_env.globals['url_for_other_page'] = url_for_other_page
 app.jinja_env.globals['url_for_bbs'] = url_for_bbs
+
+
 if __name__ == '__main__':
 	app.run()
